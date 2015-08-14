@@ -700,7 +700,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                 .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlManualUpdatebtns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(283, Short.MAX_VALUE))
         );
 
         pnlSideBar.add(PrincipalPane, "card2");
@@ -888,8 +888,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         pnlsubMain.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlsubMain.setLayout(new java.awt.CardLayout());
 
-        pnlStuPersonalInfo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         lblStuInfoHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblStuInfoHeading.setText("Student Information");
 
@@ -1059,13 +1057,13 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(lblStuInfoHeading)
-                        .addGap(0, 168, Short.MAX_VALUE)))
+                        .addGap(0, 172, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlStuPersonalInfoLayout.setVerticalGroup(
             pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addComponent(lblStuInfoHeading)
                 .addGap(18, 18, 18)
                 .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1131,8 +1129,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                         .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(chkHostel)
                             .addComponent(lblHostel)))
-                    .addComponent(lblGuardAddress2))
-                .addContainerGap(9, Short.MAX_VALUE))
+                    .addComponent(lblGuardAddress2)))
         );
 
         javax.swing.GroupLayout pnlStuInfoLayout = new javax.swing.GroupLayout(pnlStuInfo);
@@ -1153,8 +1150,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         );
 
         pnlsubMain.add(pnlStuInfo, "card2");
-
-        pnlsubLecturerInfo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblLecturerInfo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblLecturerInfo.setText("Lecturer Information");
@@ -1283,8 +1278,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
 
         pnlsubMain.add(pnlLectInfo, "card3");
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -1343,7 +1336,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGap(150, 150, 150)
                                 .addComponent(jLabel9)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE))))
@@ -1389,8 +1382,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         );
 
         pnlsubMain.add(pnlRepeatWarnings, "card4");
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel3.setText("Subject Information");
@@ -1439,7 +1430,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(131, 131, 131)
                         .addComponent(jLabel3)))
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap(221, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1483,10 +1474,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         );
 
         pnlsubMain.add(pnlSubjectInformation, "card5");
-
-        pnlOverallDailyAttendance.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        pnlsubOverallDailyAttendance.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lbldate.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbldate.setText("Date");
@@ -1562,7 +1549,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
             .addGroup(pnlOverallDailyAttendanceLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlsubOverallDailyAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         pnlOverallDailyAttendanceLayout.setVerticalGroup(
             pnlOverallDailyAttendanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1652,7 +1639,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addGroup(pnlUpdateDailyAttendanceLayout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1791,7 +1778,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                 .addContainerGap()
                 .addComponent(jLabel21)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1841,7 +1828,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                 .addContainerGap()
                 .addComponent(jLabel23)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7)
                 .addContainerGap())
@@ -1884,7 +1871,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                 .addContainerGap()
                 .addComponent(jLabel24)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1898,7 +1885,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         );
         pnlWelcomeLayout.setVerticalGroup(
             pnlWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 686, Short.MAX_VALUE)
+            .addGap(0, 690, Short.MAX_VALUE)
         );
 
         pnlsubMain.add(pnlWelcome, "card12");
@@ -1917,16 +1904,14 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlsubMain, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(pnlSideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlSideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlsubMain, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlControls.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlControls.setLayout(new java.awt.CardLayout());
-
-        pnlStudentControlsofPrincipal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         pnlStudSpeInfoP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -2146,8 +2131,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
 
         pnlControls.add(pnlStudentControlsofPrincipal, "card3");
 
-        pnlStudentControlsofLecturer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         pnlStudSpeInfoL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btnSubAttendance1.setText("View Subject Attendance");
@@ -2172,7 +2155,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         pnlStudSpeInfoLLayout.setHorizontalGroup(
             pnlStudSpeInfoLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStudSpeInfoLLayout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap(54, Short.MAX_VALUE)
                 .addComponent(lblCurricular1)
                 .addGap(43, 43, 43))
             .addGroup(pnlStudSpeInfoLLayout.createSequentialGroup()
@@ -2226,7 +2209,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
             .addGroup(pnlStuDbControlsLLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(lblStuDbControls2)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         pnlStuDbControlsLLayout.setVerticalGroup(
             pnlStuDbControlsLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2344,8 +2327,6 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
 
         pnlControls.add(pnlNull, "card5");
 
-        pnlUpdateStudentInformationControl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
         jLabel22.setText("Select Batch");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -2363,7 +2344,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addGroup(pnlUpdateStudentInformationControlLayout.createSequentialGroup()
                         .addComponent(jLabel22)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, 0, 265, Short.MAX_VALUE)))
+                        .addComponent(jComboBox2, 0, 269, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlUpdateStudentInformationControlLayout.setVerticalGroup(
@@ -2375,7 +2356,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(559, Short.MAX_VALUE))
+                .addContainerGap(565, Short.MAX_VALUE))
         );
 
         pnlControls.add(pnlUpdateStudentInformationControl, "card6");
@@ -2423,12 +2404,10 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton9)
-                .addContainerGap(588, Short.MAX_VALUE))
+                .addContainerGap(590, Short.MAX_VALUE))
         );
 
         pnlControls.add(pnlUpdateMarksControl, "card7");
-
-        pnlLecturerControlsOfPrincipal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         pnlStuDbControls1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -2590,7 +2569,7 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
                 .addComponent(pnlStuDbControls1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlLecSearchP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(377, Short.MAX_VALUE))
+                .addContainerGap(383, Short.MAX_VALUE))
         );
 
         pnlControls.add(pnlLecturerControlsOfPrincipal, "card2");
@@ -2607,11 +2586,13 @@ public class MainGUI extends javax.swing.JFrame implements MainGUIObserver{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 21, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlControls, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlControls, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
