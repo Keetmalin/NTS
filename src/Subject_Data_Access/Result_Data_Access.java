@@ -9,11 +9,13 @@ import Connection.DBConnector;
 import Subject_Domain.Continous_Assignments;
 import Subject_Domain.End_Semester_Exam;
 import Subject_Domain.Subject;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 
 /**
  *
@@ -29,10 +31,17 @@ public class Result_Data_Access {
 
     public void saveAssignmentResults(int level, int batch, int assignmentNumber, Subject subject, int[][] results) throws ClassNotFoundException, SQLException {
         //to make the table name according to given parameters
-        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_" + assignmentNumber + "_marks";
+        LinkedList<String> list = new LinkedList<String>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        list.add("four");
+        list.add("five");
+
+        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_marks";
         //this will create final sql statement for execution
         String sql;
-        sql = "CREATE TABLE " + tableName + " (student_id int NOT NULL, result int NOT NULL, PRIMARY KEY (student_id));";
+        sql = "CREATE TABLE " + tableName + " (student_id int NOT NULL, " + list.get(assignmentNumber-1) + " int NOT NULL, PRIMARY KEY (student_id));";
 
         this.connector.createNewTable(sql);
         for (int i = 0; i < results.length; i++) {
@@ -44,13 +53,20 @@ public class Result_Data_Access {
 
     public Continous_Assignments getAssignmentResults(int level, int batch, int assignmentNumber, Subject subject) throws ClassNotFoundException, SQLException {
         //table name that we require
-        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_" + assignmentNumber + "_marks";
+        LinkedList<String> list = new LinkedList<String>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        list.add("four");
+        list.add("five");
+
+        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_marks";
         //create sql statememt
         String sql;
         sql = "SELECT * FROM " + tableName;
         ResultSet rs = connector.getQuerry(sql);
         //this iwll be used to store the datbase as an array
-        int[][] list = null;
+        int[][] list2 = null;
         int row = 0;
         //this iwll get the row count
         while (rs.next()) {
@@ -58,37 +74,54 @@ public class Result_Data_Access {
         }
         //set the cursor of the result set to the beginning
         rs.beforeFirst();
-        list = new int[row][2];
+        list2 = new int[row][2];
         //assign the table values to a 2D Array
         int i = 0;
         while (rs.next()) {
-            list[i][0] = rs.getInt("student_id");
-            list[i][1] = rs.getInt("result");
+            list2[i][0] = rs.getInt("student_id");
+            list2[i][1] = rs.getInt(list.get(assignmentNumber-1));
             i++;
         }
         Continous_Assignments ca = new Continous_Assignments(assignmentNumber);
         ca.setBatch(batch);
         ca.setLevel(level);
         ca.setSubject(subject);
-        ca.setResults(list);
+        ca.setResults(list2);
         return ca;
     }
 
     public void updateAssignmentResults(int level, int batch, int assignmentNumber, Subject subject, int[][] results) throws ClassNotFoundException, SQLException {
         //make table name
-        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_" + assignmentNumber + "_marks";
+        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_assignment_marks";
         String sql;
+        
+        LinkedList<String> list = new LinkedList<String>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        list.add("four");
+        list.add("five");
 
-        for (int i = 0; i < results.length; i++) {
-            sql = "UPDATE " + tableName + " SET student_id='" + results[i][0] + "',result='" + results[i][1] + "' WHERE student_id='" + results[i][0] + "'";
+        try {
+            for (int i = 0; i < results.length; i++) {
+                sql = "UPDATE " + tableName + " SET student_id='" + results[i][0] + "',"+list.get(assignmentNumber-1)+"='" + results[i][1] + "' WHERE student_id='" + results[i][0] + "'";
+                connector.updateTable(sql);
+            }
+        }catch(MySQLSyntaxErrorException ex){
+            sql = "ALTER TABLE " + tableName + " ADD " + list.get(assignmentNumber-1) + " int not null";
             connector.updateTable(sql);
+            for (int i = 0; i < results.length; i++) {
+                //connector.updateTable(sql2);
+                sql = "UPDATE " + tableName + " SET student_id=" + results[i][0] + "," + list.get(assignmentNumber-1) + "=" + results[i][1] + " WHERE student_id=" + results[i][0];
+                connector.updateTable(sql);
+            }
         }
+
     }
 
     //public void saveResults(int level, int batch, Subject subject, int[][] results) {
     //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     //}
-
     public void saveEndResults(int level, int batch, Subject subject, int[][] results) throws ClassNotFoundException, SQLException {
         //to make the table name according to given parameters
         String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_EndExam_marks";

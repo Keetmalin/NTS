@@ -9,9 +9,11 @@ import Connection.DBConnector;
 import Student_Domain.Student;
 import Subject_Domain.Subject;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,9 +24,18 @@ import java.util.Vector;
 public class Student_Data_Access {
 
     private DBConnector connector;
-    public static List<String> getStudentList(){
-        return null;
     
+    public LinkedList<String> getStudentList() throws ClassNotFoundException, SQLException {
+        LinkedList<String> list= new LinkedList<String>();
+        String sql2 = "SELECT * FROM student";
+        ResultSet rs2 = connector.getQuerry(sql2);
+        
+        while(rs2.next()){
+            list.add(rs2.getString("name"));            
+        }
+        
+        
+        return list;
     }
     
     public Student_Data_Access(DBConnector connector) {
@@ -252,18 +263,105 @@ public class Student_Data_Access {
 
         return student;
     }
-    public String getCurrentSemesterStartingDate(int batch){
+    public String getCurrentSemesterStartingDate(int batch) throws SQLException, ClassNotFoundException{
+         String sql;
+        sql = "SELECT * FROM semester_startdate WHERE batch LIKE '%" + batch + "%'";
+        ResultSet rs = connector.getQuerry(sql);
+        
+        LinkedList<String> list = new LinkedList<String>();
+        list.add("semester_one");
+        list.add("semester_two");
+        list.add("semester_three");
+        list.add("semester_four");
+        list.add("semester_five");
+        list.add("semester_six");
+        list.add("semester_seven");
+        list.add("semester_eight");
+        list.add("semester_nine");
+         
+        if (rs.next()){
+            int i=0;
+            while (rs.getString(list.get(i))!=null){
+               i++;     
+            }
+            return rs.getString(i+1);
+            
+            
+        }
         
         return null;
     }
-    public String getCurrentSemesterNumber(int batch){
+    public String getCurrentSemesterNumber(int batch) throws SQLException, ClassNotFoundException{
+        String sql;
+        sql = "SELECT * FROM semester_startdate WHERE batch LIKE '%" + batch + "%'";
+        ResultSet rs = connector.getQuerry(sql);
+        
+        LinkedList<String> list = new LinkedList<String>();
+        list.add("semester_one");
+        list.add("semester_two");
+        list.add("semester_three");
+        list.add("semester_four");
+        list.add("semester_five");
+        list.add("semester_six");
+        list.add("semester_seven");
+        list.add("semester_eight");
+        list.add("semester_nine");
+
+        if(rs.next()){
+            int i =0;
+            while (rs.getString(list.get(i))!=null){
+                i++;
+            }
+            ResultSetMetaData rsmd = rs.getMetaData();
+            return rsmd.getColumnName(i+1);
+        }
+         
         return null;
     }
+    
     public Object[][] getAllResults(int index, int level) {
         return null;
     }
 
-    public int[][] getSubjectAttendance(int index, Subject subject) {
-        return null;
+    public Object[][] getSubjectAttendance(int index, Subject subject) throws ClassNotFoundException, SQLException {
+        DBConnector db = new DBConnector();
+        Student_Data_Access sda = new Student_Data_Access(db);
+        //String table_Name = "level" + subject.getLevel() + "_batch" + sda.getProfile(index).getBatch() + "_daily_attendance";
+
+        
+        String table_Name = "level" +  subject.getLevel() + "_batch" + sda.getProfile(index).getBatch() + "_" + subject.getCode() + "_subject_attendance";
+        String sql = "SELECT * FROM information_schema.columns WHERE TABLE_NAME = '" + table_Name + "'";
+        ResultSet rs = connector.getQuerry(sql);
+
+        int row = 0;
+        //this iwll get the row count
+        while (rs.next()) {
+            row++;
+        }
+        //set the cursor of the result set to the beginning
+        rs.beforeFirst();
+
+        String sql2 = "SELECT * FROM "+table_Name +" WHERE student_id LIKE '%" + index+ "%'";
+        ResultSet rs2 = connector.getQuerry(sql2);
+        ResultSetMetaData rsmd = rs2.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+
+        Object[][] o = new Object[2][columnsNumber];
+        int i = 0;
+        rs.next();
+        while (rs.next()) {
+            o[0][i + 1] = rs.getString("COLUMN_NAME");
+            i++;
+        }
+
+        i = 1;
+        while (rs2.next()) {
+            for (int j = 0; j < columnsNumber; j++) {
+                o[i][j] = rs2.getInt(j + 1);
+            }
+            i++;
+        }
+
+        return o;
     }
 }
