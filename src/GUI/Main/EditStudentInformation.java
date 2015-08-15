@@ -7,13 +7,33 @@ package GUI.Main;
 
 import Student_Data_Access.Student_Data_Access;
 import Student_Domain.Student;
+import com.sun.corba.se.spi.copyobject.CopyobjectDefaults;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import sun.security.pkcs11.Secmod;
 
 /**
@@ -21,7 +41,7 @@ import sun.security.pkcs11.Secmod;
  * @author Dulanjaya Tennekoon
  */
 public class EditStudentInformation extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form EditStudentInfromation
      */
@@ -29,12 +49,14 @@ public class EditStudentInformation extends javax.swing.JFrame {
     private Student_Data_Access stuAccess;
     private Student stu;
     private MainGUIObserver GUIObserver;
+    private String defaultDestinationPath = "D:/images/";
+
     public EditStudentInformation() throws HeadlessException {
         initComponents();
         startupSettings();
     }
 
-    public EditStudentInformation (MainGUIObserver GUIObserver,Student_Data_Access stuAccess, String stuId) {
+    public EditStudentInformation(MainGUIObserver GUIObserver, Student_Data_Access stuAccess, String stuId) {
         initComponents();
         startupSettings();
         this.GUIObserver = GUIObserver;
@@ -46,12 +68,12 @@ public class EditStudentInformation extends javax.swing.JFrame {
             Logger.getLogger(EditStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(EditStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
-        } catch(Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Invalid Student ID", app_name, JOptionPane.WARNING_MESSAGE);
         }
         startUpSettingData(stuAccess, stuId);
     }
-    
+
     public void startUpSettingData(Student_Data_Access stuAccess, String stuId) {
         Student stu;
         try {
@@ -72,15 +94,31 @@ public class EditStudentInformation extends javax.swing.JFrame {
             txtGuardAddress2.setText(stu.getGuadian2Address());
             txtGuardPhone2.setText(Integer.toString(stu.getGuadian2Telephone()));
             chkHostel.setSelected(stu.isIsHostel());
+            System.out.println(stu.getPicture());
+            try {
+                BufferedImage bi = ImageIO.read(new File(stu.getPicture()));
+                profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+            } catch (IOException e) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, e);
+                BufferedImage bi = ImageIO.read(getClass().getResource("/profilePictures/Default.png"));
+                profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+            } catch (IllegalArgumentException e) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, e);
+                BufferedImage bi = ImageIO.read(getClass().getResource("/profilePictures/Default.png"));
+                profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException e) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Enter a Valid Index Please!", app_name, JOptionPane.WARNING_MESSAGE);
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(this, "Enter a Valid Index Please!", app_name, JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     public void startupSettings() {
         this.setLocationRelativeTo(null);
     }
@@ -94,6 +132,7 @@ public class EditStudentInformation extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnSave = new javax.swing.JButton();
@@ -115,7 +154,6 @@ public class EditStudentInformation extends javax.swing.JFrame {
         txtPhone = new javax.swing.JTextField();
         lblDOB = new javax.swing.JLabel();
         lblDOReg = new javax.swing.JLabel();
-        canvasProfImage = new java.awt.Canvas();
         lblGuardName1 = new javax.swing.JLabel();
         txtGuardName1 = new javax.swing.JTextField();
         lblGuardPhone1 = new javax.swing.JLabel();
@@ -134,6 +172,20 @@ public class EditStudentInformation extends javax.swing.JFrame {
         txtGuardAddress2 = new javax.swing.JTextArea();
         dpDOB = new org.jdesktop.swingx.JXDatePicker();
         dpDOReg = new org.jdesktop.swingx.JXDatePicker();
+        profPicture = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        setResizable(false);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -194,26 +246,18 @@ public class EditStudentInformation extends javax.swing.JFrame {
 
         lblStuName.setText("Student Name");
 
-        txtStuName.setEditable(false);
-
         lblBatch.setText("Batch");
-
-        txtBatch.setEditable(false);
 
         lblAddress.setText("Address");
 
         txtAddress.setColumns(20);
-        txtAddress.setEditable(false);
         txtAddress.setRows(5);
         jspAddress.setViewportView(txtAddress);
 
         lblIDNo.setText("NIC");
 
-        txtIDno.setEditable(false);
-
         lblPhone.setText("Phone Number");
 
-        txtPhone.setEditable(false);
         txtPhone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPhoneActionPerformed(evt);
@@ -224,11 +268,8 @@ public class EditStudentInformation extends javax.swing.JFrame {
 
         lblDOReg.setText("Registration Date");
 
-        canvasProfImage.setBackground(new java.awt.Color(153, 153, 255));
-
         lblGuardName1.setText("Guardian1's Name");
 
-        txtGuardName1.setEditable(false);
         txtGuardName1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtGuardName1ActionPerformed(evt);
@@ -236,8 +277,6 @@ public class EditStudentInformation extends javax.swing.JFrame {
         });
 
         lblGuardPhone1.setText("Guardian1's Phone");
-
-        txtGuardPhone1.setEditable(false);
 
         lblHostel.setText("Hostel Student");
 
@@ -254,9 +293,6 @@ public class EditStudentInformation extends javax.swing.JFrame {
 
         lblGuardPhone2.setText("Guardian2's Phone");
 
-        txtGuardPhone2.setEditable(false);
-
-        txtGuardName2.setEditable(false);
         txtGuardName2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtGuardName2ActionPerformed(evt);
@@ -265,15 +301,20 @@ public class EditStudentInformation extends javax.swing.JFrame {
 
         lblGuardName2.setText("Guardian2's Name");
 
-        txtGuardAddress1.setEditable(false);
         txtGuardAddress1.setColumns(20);
         txtGuardAddress1.setRows(5);
         jspAddress1.setViewportView(txtGuardAddress1);
 
-        txtGuardAddress2.setEditable(false);
         txtGuardAddress2.setColumns(20);
         txtGuardAddress2.setRows(5);
         jspAddress2.setViewportView(txtGuardAddress2);
+
+        profPicture.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        profPicture.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profPictureMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlStuPersonalInfoLayout = new javax.swing.GroupLayout(pnlStuPersonalInfo);
         pnlStuPersonalInfo.setLayout(pnlStuPersonalInfoLayout);
@@ -300,54 +341,48 @@ public class EditStudentInformation extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                        .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtStuName)
-                                    .addComponent(txtStuID)
-                                    .addComponent(txtBatch))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(jspAddress)
-                                .addGap(10, 10, 10))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(txtPhone)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(txtGuardPhone1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(jspAddress1)
-                                .addGap(10, 10, 10))
-                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(txtIDno)
-                                .addGap(10, 10, 10))
-                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(jspAddress2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(txtGuardName2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(txtGuardPhone2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(chkHostel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addComponent(dpDOB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                                .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(dpDOReg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtGuardName1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addComponent(canvasProfImage, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPhone)
+                        .addGap(170, 170, 170))
                     .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(lblStuInfoHeading)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(txtGuardPhone1)
+                        .addGap(170, 170, 170))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addComponent(jspAddress1)
+                        .addGap(170, 170, 170))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addComponent(txtIDno)
+                        .addGap(170, 170, 170))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addComponent(jspAddress2)
+                        .addGap(170, 170, 170))
+                    .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addComponent(txtGuardName2)
+                        .addGap(170, 170, 170))
+                    .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addComponent(txtGuardPhone2)
+                        .addGap(170, 170, 170))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dpDOReg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtGuardName1))
+                        .addGap(170, 170, 170))
+                    .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtStuName)
+                            .addComponent(txtStuID)
+                            .addComponent(txtBatch)
+                            .addComponent(jspAddress)
+                            .addComponent(dpDOB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(profPicture, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
+                        .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkHostel)
+                            .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(lblStuInfoHeading)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlStuPersonalInfoLayout.setVerticalGroup(
             pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,7 +391,6 @@ public class EditStudentInformation extends javax.swing.JFrame {
                 .addComponent(lblStuInfoHeading)
                 .addGap(18, 18, 18)
                 .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(canvasProfImage, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlStuPersonalInfoLayout.createSequentialGroup()
                         .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblStuID)
@@ -376,7 +410,8 @@ public class EditStudentInformation extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblAddress)
-                            .addComponent(jspAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jspAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(profPicture, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlStuPersonalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIDno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -446,7 +481,7 @@ public class EditStudentInformation extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
-    
+
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         stu.setAccess(stuAccess);
         stu.setName(txtStuName.getText());
@@ -474,7 +509,7 @@ public class EditStudentInformation extends javax.swing.JFrame {
         }
         GUIObserver.searchStudentbyID();
         this.setVisible(false);
-        
+
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void txtPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPhoneActionPerformed
@@ -492,6 +527,33 @@ public class EditStudentInformation extends javax.swing.JFrame {
     private void txtGuardName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGuardName2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGuardName2ActionPerformed
+
+    private void profPictureMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profPictureMouseClicked
+        JFileChooser jf = new JFileChooser();
+        jf.setDialogTitle("Select a Profile Picture");
+
+        String[] suffices = ImageIO.getReaderFileSuffixes();
+        for (int i = 0; i < suffices.length; i++) {
+            FileFilter filter = new FileNameExtensionFilter(suffices[i] + " files", suffices[i]);
+            jf.addChoosableFileFilter(filter);
+        }
+        InputStream instream = null;
+        OutputStream outstream = null;
+        int ret = jf.showDialog(null, "Choose the Profile Picture");
+        if (jf.getSelectedFile() != null) {
+            File source = new File(jf.getSelectedFile().getPath());
+            File dest = new File(defaultDestinationPath.concat(Integer.toString(stu.getID())).concat(".png"));
+            System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+            try {
+                Files.copy(Paths.get(source.getPath()), Paths.get(dest.getPath()),StandardCopyOption.REPLACE_EXISTING);
+                stu.setPicture(defaultDestinationPath.concat(Integer.toString(stu.getID())).concat(".png"));
+                startUpSettingData(stuAccess, Integer.toString(stu.getID()));
+            } catch (IOException ex) {
+                Logger.getLogger(EditStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_profPictureMouseClicked
 
     /**
      * @param args the command line arguments
@@ -533,11 +595,11 @@ public class EditStudentInformation extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSave;
-    private java.awt.Canvas canvasProfImage;
     private javax.swing.JCheckBox chkHostel;
     private org.jdesktop.swingx.JXDatePicker dpDOB;
     private org.jdesktop.swingx.JXDatePicker dpDOReg;
     private javax.swing.JButton jButton2;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jspAddress;
@@ -560,6 +622,7 @@ public class EditStudentInformation extends javax.swing.JFrame {
     private javax.swing.JLabel lblStuInfoHeading;
     private javax.swing.JLabel lblStuName;
     private javax.swing.JPanel pnlStuPersonalInfo;
+    private javax.swing.JLabel profPicture;
     private javax.swing.JTextArea txtAddress;
     private javax.swing.JTextField txtBatch;
     private javax.swing.JTextArea txtGuardAddress1;

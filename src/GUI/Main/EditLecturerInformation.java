@@ -7,9 +7,22 @@ package GUI.Main;
 
 import Lecturer_Data_Access.Lecturer_Data_Access;
 import Lecturer_Domain.Lecturer;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -24,12 +37,13 @@ public class EditLecturerInformation extends javax.swing.JFrame {
     private Lecturer lec;
     private MainGUIObserver observer;
     private final String app_name = "NTS";
-    
+    private String defaultDestinationPath = "D:/images/";
+
     public EditLecturerInformation() {
         initComponents();
         startupSettings();
     }
-    
+
     public EditLecturerInformation(MainGUIObserver observer, Lecturer_Data_Access lecAccess, int lecId) {
         this.lecAccess = lecAccess;
         this.observer = observer;
@@ -44,16 +58,39 @@ public class EditLecturerInformation extends javax.swing.JFrame {
             Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void startupSettings() {
         this.setLocationRelativeTo(null);
     }
-    
+
     public void starupSettingsData() {
         txtlecId.setText(Integer.toString(lec.getID()));
         txtlecName.setText(lec.getName());
         txtlecNIC.setText(lec.getNIC());
         txtlecAddress.setText(lec.getAddress());
+        System.out.println(lec.getPicture());
+        try {
+            BufferedImage bi = ImageIO.read(new File(lec.getPicture()));    
+            profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+        } catch (IOException e) {
+            Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, e);
+            BufferedImage bi;
+            try {
+                bi = ImageIO.read(getClass().getResource("/profilePictures/Default.png"));
+                profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+            } catch (IOException ex) {
+                Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (IllegalArgumentException e) {
+            BufferedImage bi;
+            try {
+                bi = ImageIO.read(getClass().getResource("/profilePictures/Default.png"));
+                profPicture.setIcon(new ImageIcon(bi.getScaledInstance(142, 162, 10)));
+            } catch (IOException ex) {
+                Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
     }
 
     /**
@@ -80,7 +117,7 @@ public class EditLecturerInformation extends javax.swing.JFrame {
         txtlecAddress = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
-        canvas1 = new java.awt.Canvas();
+        profPicture = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -110,7 +147,12 @@ public class EditLecturerInformation extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jList1);
 
-        canvas1.setBackground(new java.awt.Color(0, 51, 255));
+        profPicture.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        profPicture.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profPictureMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlLecturerInfoFieldsLayout = new javax.swing.GroupLayout(pnlLecturerInfoFields);
         pnlLecturerInfoFields.setLayout(pnlLecturerInfoFieldsLayout);
@@ -135,8 +177,8 @@ public class EditLecturerInformation extends javax.swing.JFrame {
                             .addComponent(txtlecNIC, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtlecName)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(profPicture, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         pnlLecturerInfoFieldsLayout.setVerticalGroup(
@@ -144,7 +186,7 @@ public class EditLecturerInformation extends javax.swing.JFrame {
             .addGroup(pnlLecturerInfoFieldsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlLecturerInfoFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(canvas1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(profPicture, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlLecturerInfoFieldsLayout.createSequentialGroup()
                         .addGroup(pnlLecturerInfoFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblLecturerID)
@@ -176,7 +218,7 @@ public class EditLecturerInformation extends javax.swing.JFrame {
                 .addGroup(pnlsubLecturerInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlLecturerInfoFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlsubLecturerInfoLayout.createSequentialGroup()
-                        .addGap(133, 133, 133)
+                        .addGap(150, 150, 150)
                         .addComponent(lblLecturerInfo)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -290,12 +332,41 @@ public class EditLecturerInformation extends javax.swing.JFrame {
             lec.setAddress(txtlecAddress.getText());
             lec.editLecturerProfile();
             observer.searchLecturerbyID();
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(EditLecturerInformation.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.setVisible(false);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void profPictureMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profPictureMouseClicked
+        JFileChooser jf = new JFileChooser();
+        jf.setDialogTitle("Select a Profile Picture");
+
+        String[] suffices = ImageIO.getReaderFileSuffixes();
+        for (int i = 0; i < suffices.length; i++) {
+            FileFilter filter = new FileNameExtensionFilter(suffices[i] + " files", suffices[i]);
+            jf.addChoosableFileFilter(filter);
+        }
+        InputStream instream = null;
+        OutputStream outstream = null;
+        int ret = jf.showDialog(null, "Choose the Profile Picture");
+        if (jf.getSelectedFile() != null) {
+            File source = new File(jf.getSelectedFile().getPath());
+            File dest = new File(defaultDestinationPath.concat("Lec").concat(Integer.toString(lec.getID())).concat(".png"));
+            System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+            try {
+                Files.copy(Paths.get(source.getPath()), Paths.get(dest.getPath()),StandardCopyOption.REPLACE_EXISTING);
+                lec.setPicture(defaultDestinationPath.concat("Lec").concat(Integer.toString(lec.getID())).concat(".png"));
+                starupSettingsData();
+            } catch (IOException ex) {
+                Logger.getLogger(EditStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_profPictureMouseClicked
 
     /**
      * @param args the command line arguments
@@ -334,7 +405,6 @@ public class EditLecturerInformation extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Canvas canvas1;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
@@ -349,6 +419,7 @@ public class EditLecturerInformation extends javax.swing.JFrame {
     private javax.swing.JLabel lblNIC;
     private javax.swing.JPanel pnlLecturerInfoFields;
     private javax.swing.JPanel pnlsubLecturerInfo;
+    private javax.swing.JLabel profPicture;
     private javax.swing.JTextField txtlecAddress;
     private javax.swing.JTextField txtlecId;
     private javax.swing.JTextField txtlecNIC;
