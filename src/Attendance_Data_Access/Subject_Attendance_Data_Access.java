@@ -9,6 +9,7 @@ import Connection.DBConnector;
 import Subject_Domain.Subject;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -59,7 +60,7 @@ public class Subject_Attendance_Data_Access extends Attendace_Data_Access {
         list = new int[row][2];
         //assign the table values to a 2D Array
         int i = 0;
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatter = new SimpleDateFormat("yyyy_MM_dd");
         String s = formatter.format(date);
         while (rs.next()) {
             list[i][0] = rs.getInt("student_id");
@@ -74,7 +75,7 @@ public class Subject_Attendance_Data_Access extends Attendace_Data_Access {
         String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_subject_attendance";
         String sql;
 
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatter = new SimpleDateFormat("yyyy_MM_dd");
         String s = formatter.format(date);
 
         //String sql2 = "IF COL_LENGTH( "+tableName+" , L" + LectureNumber + "_" + s+ " ) IS NULL BEGIN ALTER TABLE "+tableName+" ADD [L" + LectureNumber + "_" + s+"] INT END";
@@ -96,6 +97,47 @@ public class Subject_Attendance_Data_Access extends Attendace_Data_Access {
         }
 
     }
-    public int[][] getSubjectWarnings(Subject subject){return null;}
-    public int[][] getSubjectAttendanceReports(int batch,int level,Subject subject){return null;}    
+
+    //public int[][] getSubjectWarnings(Subject subject){return null;}
+
+    public Object[][] getSubjectAttendanceReports(int batch, int level, Subject subject) throws SQLException, ClassNotFoundException {
+        DBConnector db = new DBConnector();
+        //Student_Data_Access sda = new Student_Data_Access(db);
+        String tableName = "level" + level + "_batch" + batch + "_" + subject.getCode() + "_subject_attendance";
+
+        String sql = "SELECT * FROM information_schema.columns WHERE TABLE_NAME = '" + tableName + "'";
+        ResultSet rs = connector.getQuerry(sql);
+
+        int row = 0;
+        //this iwll get the row count
+        while (rs.next()) {
+            row++;
+        }
+        //set the cursor of the result set to the beginning
+        rs.beforeFirst();
+
+        String sql2 = "SELECT * FROM " + tableName;
+        ResultSet rs2 = connector.getQuerry(sql2);
+        ResultSetMetaData rsmd = rs2.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+
+        Object[][] o = new Object[row + 1][columnsNumber];
+        int i = 0;
+        rs.next();
+        while (rs.next()) {
+            o[0][i + 1] = rs.getString("COLUMN_NAME");
+            i++;
+        }
+
+        i = 1;
+        while (rs2.next()) {
+            for (int j = 0; j < columnsNumber; j++) {
+                o[i][j] = rs2.getInt(j + 1);
+            }
+            i++;
+        }
+
+        return o;
+        
+    }
 }
