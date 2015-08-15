@@ -51,7 +51,7 @@ public class Subject_Data_Access {
                 + "' WHERE subject_code='" + code + "'";
         connector.updateTable(sql);
     }
-
+    
     public Subject getSubjectByName(String name) throws ClassNotFoundException, SQLException {
         String sql;
         sql = "SELECT * FROM subject WHERE name LIKE '%" + name + "%'";
@@ -93,6 +93,13 @@ public class Subject_Data_Access {
 
         return subject;
 
+    }
+    public int[][] getStudentSubjectAttendance(int index, Subject subject) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Subject[][] getSubjectNames(int level) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

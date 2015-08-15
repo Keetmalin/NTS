@@ -6,6 +6,7 @@
 package Student_Domain;
 
 import Lecturer_Data_Access.Lecturer_Data_Access;
+import Subject_Domain.Subject;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -324,6 +325,79 @@ public class Student  {
     public void setAccess(Student_Data_Access.Student_Data_Access access) {
         this.access = access;
     }
-
+    public Object[][] getDailyAttendace() throws ClassNotFoundException, SQLException{
+        return getAccess().getDailyAttendance(this.id);
+    }
+    public Object[][] getSemesterDailyAttendance(Date startingData) throws ClassNotFoundException, SQLException{
+        
+        Object[][] array = this.getDailyAttendace();
+        int index = 0 ;
+        int numberOfDays = array[0].length;
+        for(int i = 0 ;i<numberOfDays;i++){
+            String [] dateComponents = array[0][i].toString().split("_");
+            int year = Integer.parseInt(dateComponents[0]);
+            int month = Integer.parseInt(dateComponents[1]);
+            int day = Integer.parseInt(dateComponents[2]);
+            Date temp = new Date(year, month, day);
+            if(startingData.compareTo(temp)==0){
+                    index = i;
+                    break;
+            }
+        }
+        Object [][]resultArray = new Object[2][numberOfDays-index];
+        for(int i = index ;i<numberOfDays;i++){
+            resultArray[0][i-index] = array[0][i];
+            resultArray[1][i-index] = array[1][i];
+            
+        }
+        return resultArray;
+        
+    }
+    public Object[][] getLectureAttendace(){return null;}
+    public Object[][] getSemesterLectureAttendance(Date startingData,Subject subject){
+        Object[][] array = this.getLectureAttendace();
+        int index = 0 ;
+        int numberOfDays = array[0].length;
+        for(int i = 0 ;i<numberOfDays;i++){
+            String [] dateComponents = array[0][i].toString().split("_");
+            int year = Integer.parseInt(dateComponents[0]);
+            int month = Integer.parseInt(dateComponents[1]);
+            int day = Integer.parseInt(dateComponents[2]);
+            Date temp = new Date(year, month, day);
+            if(startingData.compareTo(temp)==0){
+                    index = i;
+                    break;
+            }
+        }
+        Object [][]resultArray = new Object[2][numberOfDays-index];
+        for(int i = index ;i<numberOfDays;i++){
+            resultArray[0][i-index] = array[0][i];
+            resultArray[1][i-index] = array[1][i];
+            
+        }
+        return resultArray;
+        
+    }
+    public int getNumberOfDailyAttendanceAbsentDays(Date startingDate) throws ClassNotFoundException, SQLException{
+        Object[][] array = this.getSemesterDailyAttendance(startingDate);
+        int count = 0;
+        for(int i = 0 ;i<array[0].length;i++){
+            if(array[1][i].toString().equals("0")){
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public int getNumberOfLectureAttendanceAbsentDays(Date startingDate,Subject subject){
+        Object[][] array = this.getSemesterLectureAttendance(startingDate, subject);
+        int count = 0;
+        for(int i = 0 ;i<array[0].length;i++){
+            if(array[1][i].toString().equals("0")){
+                count++;
+            }
+        }
+        return count;
+    }
     
 }

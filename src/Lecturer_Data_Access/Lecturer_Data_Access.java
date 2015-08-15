@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Vector;
 public class Lecturer_Data_Access {
 
     private DBConnector connector;
-
+    
     public Lecturer_Data_Access(DBConnector connector) {
         this.connector = connector;
     }
@@ -144,5 +145,20 @@ public class Lecturer_Data_Access {
 
         return lecturer;
     }
-
+    public void deleteLecturer(int index){
+        
+    }
+    public static List<Lecturer> getLecturerNames(Subject subject){
+    
+        return null;
+    }
+    public Lecturer[][] getLecturers(Subject subject){
+    
+        return null;
+    }
+    public static List<String> getStudentList(){
+        return null;
+    }
+    
+    
 }
