@@ -94,12 +94,27 @@ public class Subject_Data_Access {
         return subject;
 
     }
-    public int[][] getStudentSubjectAttendance(int index, Subject subject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    public int[][] getStudentSubjectAttendance(int index, Subject subject) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
-    public Subject[][] getSubjectNames(int level) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LinkedList<String> getSubjectNames(int level) throws ClassNotFoundException, SQLException {
+        LinkedList<String> list = new LinkedList<String>();
+        String sql2 = "SELECT * FROM subject";
+        ResultSet rs2 = connector.getQuerry(sql2);
+        
+        Subject_Data_Access sa = new Subject_Data_Access(connector);
+        
+        while(rs2.next()){
+            String temp = rs2.getString("name");
+            if (sa.getSubjectByName(temp).getLevel()==level){
+                list.add(temp); 
+            }
+                       
+        }
+        
+        
+        return list;
     }
 
 }

@@ -25,7 +25,7 @@ import java.util.Vector;
 public class Lecturer_Data_Access {
 
     private DBConnector connector;
-    
+
     public Lecturer_Data_Access(DBConnector connector) {
         this.connector = connector;
     }
@@ -33,7 +33,7 @@ public class Lecturer_Data_Access {
     public void addANewLecturer(int id, String name, String picture, String nic, String address, Date dob) throws ClassNotFoundException, SQLException {
         String sql;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         sql = "INSERT INTO lecturer VALUES ('" + id + "', '" + name + "', '" + picture + "','"
                 + nic + "', '" + address + "', '" + sdf.format(dob) + "')";
         connector.updateTable(sql);
@@ -81,22 +81,22 @@ public class Lecturer_Data_Access {
         //create new student object
         Lecturer lecturer = new Lecturer((int) v.get(0), (String) v.get(1), (String) v.get(2), (String) v.get(3),
                 (String) v.get(4), (Date) v.get(5));
-        
+
         //this is to get the subject list from the bridge class
         sql = "SELECT * FROM lecturer_has_subject WHERE lecturer_id LIKE '%" + id + "%'";
         //result set to get selected row of the database
         ResultSet rs2 = connector.getQuerry(sql);
         LinkedList<Subject> list = new LinkedList<Subject>();
         DBConnector db = new DBConnector();
-        Subject_Data_Access sda= new Subject_Data_Access(db);
-        
+        Subject_Data_Access sda = new Subject_Data_Access(db);
+
         while (rs2.next()) {
-            
+
             String code = rs2.getString(2);
             list.add(sda.getSubjectByCode(code));
         }
-        lecturer.setSubjects(list);        
-        
+        lecturer.setSubjects(list);
+
         return lecturer;
     }
 
@@ -106,10 +106,10 @@ public class Lecturer_Data_Access {
 
         //result set to get selected row of the database
         ResultSet rs = connector.getQuerry(sql);
-        
+
         //this wil store the Id of the lecturer - to find the subject list
-        int lecturerId=0;
-        
+        int lecturerId = 0;
+
         //create vector to add each field in the student table
         Vector v = new Vector();
         while (rs.next()) {
@@ -125,19 +125,17 @@ public class Lecturer_Data_Access {
         //create new student object
         Lecturer lecturer = new Lecturer((int) v.get(0), (String) v.get(1), (String) v.get(2), (String) v.get(3),
                 (String) v.get(4), (Date) v.get(5));
-        
-        
-        
+
         //this is to get the subject list from the bridge class
         sql = "SELECT * FROM lecturer_has_subject WHERE lecturer_id LIKE '%" + lecturerId + "%'";
         //result set to get selected row of the database
         ResultSet rs2 = connector.getQuerry(sql);
         LinkedList<Subject> list = new LinkedList<Subject>();
         DBConnector db = new DBConnector();
-        Subject_Data_Access sda= new Subject_Data_Access(db);
-        
+        Subject_Data_Access sda = new Subject_Data_Access(db);
+
         while (rs2.next()) {
-            
+
             String code = rs2.getString(2);
             list.add(sda.getSubjectByCode(code));
         }
@@ -145,20 +143,51 @@ public class Lecturer_Data_Access {
 
         return lecturer;
     }
-    public void deleteLecturer(int index){
+
+    public void deleteLecturer(int index) throws ClassNotFoundException, SQLException {
+        String sql;
+
+        sql = "DELETE FROM lecturer WHERE lecturer_id = " + index;
+        connector.updateTable(sql);
+
+    }
+
+    public LinkedList<Lecturer> getLecturerNames(Subject subject) throws ClassNotFoundException, SQLException {
+        //this will store thr lecturer objects
+        LinkedList<Lecturer> list = new LinkedList<Lecturer>();
+        //to save the SQL querry statement
+        String sql;
+        sql = "SELECT * FROM lecturer_has_subject WHERE subject_code LIKE '%" + subject.getCode() + "%'";
+
+        ResultSet rs2 = connector.getQuerry(sql);
+        DBConnector db = new DBConnector();
+        Lecturer_Data_Access sda = new Lecturer_Data_Access(db);
+
+        while (rs2.next()) {
+
+            int id = rs2.getInt(1);
+            list.add(sda.getLecturerProfile(id));
+        }
         
+        return list;
     }
-    public static List<Lecturer> getLecturerNames(Subject subject){
-    
-        return null;
-    }
-    public Lecturer[][] getLecturers(Subject subject){
-    
-        return null;
-    }
-    public static List<String> getStudentList(){
-        return null;
-    }
-    
-    
+//
+//    public Lecturer[][] getLecturers(Subject subject) {
+//
+//        return null;
+//    }
+
+//    public LinkedList<String> getStudentList() throws ClassNotFoundException, SQLException {
+//        LinkedList<String> list= new LinkedList<String>();
+//        String sql2 = "SELECT * FROM student";
+//        ResultSet rs2 = connector.getQuerry(sql2);
+//        
+//        while(rs2.next()){
+//            list.add(rs2.getString("name"));            
+//        }
+//        
+//        
+//        return list;
+//    }
+
 }
